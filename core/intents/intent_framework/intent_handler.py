@@ -1,38 +1,33 @@
-from core.context.memory_manager import MemoryManager
+from core.context.conversation_buffer_memory import MemoryManager
 from .handler_config import configure_handlers
 from app.interfaces.intent_handler_interface import IntentHandlerInterface
-from typing import  Dict, Union
-
+from typing import Union
 
 class IntentHandler:
-    
     def __init__(self, memory_manager: MemoryManager):
         # O MemoryManager é responsável por gerenciar a memória de cada sessão
         self.memory_manager = memory_manager
         self.factory = configure_handlers()
 
-    def handle(self, intent_name: str, fulfillment_text: str, session_id: str) -> dict:
+    def handle(self, intent_name: str, user_message: str, session_id: str) -> dict:
         # Pega a memória específica da sessão
         memory = self.memory_manager.get_memory(session_id)
         
-        # Verifica fulfilments simples
-        simple_fulfillment = self._get_simple_fulfillment(intent_name)
+        # Adiciona a nova interação do usuário
+        memory.add_message(role="user", message=user_message)
 
-        if simple_fulfillment:
-            memory.add_message(role="system", message=simple_fulfillment)
-            return {"message": simple_fulfillment}
-        
         # Processa intenções complexas
         handler_class = self.factory.get_handler(intent_name)
         if handler_class:
             handler = handler_class(memory)
-            return handler.handle(fulfillment_text)
-        
-        return {"message": "Intenção não reconhecida."}
+            response = handler.handle(user_message)
+        else:
+            response = "Intenção não reconhecida."
 
-    def _get_simple_fulfillment(self, intent_name: str) -> Union[str, None]:
-        simple_fulfillments = {
-            'greeting': 'Olá! Como posso ajudar você hoje?',
-            'goodbye': 'Até logo! Tenha um ótimo dia!',
-        }
-        return simple_fulfillments.get(intent_name)
+        # Adiciona a resposta do chatbot à memória
+        memory.add_message(role="assistant", message=response)
+
+        # Salva a nova interação no Redis
+        self.memory_manager.redis_repository.save_interaction(session_id, user_message, response)
+
+        return {"message": response}

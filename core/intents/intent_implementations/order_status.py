@@ -1,5 +1,5 @@
 from app.interfaces.intent_handler_interface import IntentHandlerInterface
-from core.context.conversation_buffer_memory import BufferMemory
+from core.context.memory_manager import BufferMemory
 
 class OrderStatusHandler(IntentHandlerInterface):
     

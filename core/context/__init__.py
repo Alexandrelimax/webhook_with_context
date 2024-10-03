@@ -1,1 +1,1 @@
-from .conversation_buffer_memory import BufferMemory
+from .memory_manager import BufferMemory

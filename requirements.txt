@@ -1,0 +1,7 @@
+langchain-google-community==1.0.5
+langchain_google_vertexai==1.0.4
+vertexai==1.49.0
+langchain-core==0.2.5
+python-dotenv==1.0.1
+fastapi==0.115.2
+uvicorn==0.32.0

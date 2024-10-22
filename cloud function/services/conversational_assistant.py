@@ -22,8 +22,7 @@ class ConversationalAssistant:
         reformulated_question = self.context_handler.reformulate_question(user_input, conversation_history)
 
         # Busca os documentos mais relevantes usando o retriever
-        search_results = self.retriever.search(reformulated_question)
-        relevant_documents = [result["document"] for result in search_results]
+        relevant_documents = self.retriever.get_relevant_documents(reformulated_question)
 
         # Gera a resposta final com base no contexto e nos resultados da pesquisa
         response = self.response_handler.generate_response(user_input, conversation_history, relevant_documents)

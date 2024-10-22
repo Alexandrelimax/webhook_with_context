@@ -1,4 +1,5 @@
 from langchain_google_vertexai import ChatVertexAI
+from langchain_core.documents import Document  # Certifique-se de importar o tipo Document
 
 
 class ResponseGenerator:
@@ -7,7 +8,7 @@ class ResponseGenerator:
     def __init__(self, llm_client: ChatVertexAI):
         self.llm_client = llm_client
 
-    def generate_response(self, user_input: str, conversation_history: list, relevant_documents: list) -> str:
+    def generate_response(self, user_input: str, conversation_history: list, relevant_documents: list[Document]) -> str:
         # Instruções para gerar uma resposta natural e fluida
         prompt_instructions = """
         Você é um assistente inteligente que responde com base no contexto da conversa anterior e nos resultados da pesquisa.
@@ -26,11 +27,13 @@ class ResponseGenerator:
                 formatted_history.append(("human", user_question))
                 formatted_history.append(("system", bot_answer))
 
-        # Adiciona a nova pergunta do usuário e os resultados relevantes da pesquisa
+        # Adiciona a nova pergunta do usuário
         formatted_history.append(("human", user_input))
 
         # Adiciona os resultados relevantes da pesquisa como contexto para a LLM
-        search_context = "\n\n".join([f"Documento: {doc['title']}\nResumo: {doc['summary']}" for doc in relevant_documents])
+        search_context = "\n\n".join([f"Documento: {doc.metadata.get('title', 'Sem título')}\n"
+                                      f"Conteúdo: {doc.page_content}" for doc in relevant_documents])
+        
         formatted_history.append(("system", f"Resultados da pesquisa:\n{search_context}"))
 
         # Invoca a LLM para gerar a resposta conversacional

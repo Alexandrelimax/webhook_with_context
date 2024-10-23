@@ -23,15 +23,15 @@ context_conversation = ContextConversation(llm_client=llm_client)
 #     ("Quem é o presidente do Brasil?", "O presidente do Brasil é o Presidente Lula."),
 #     ("Quais são as principais políticas dele?", "O Presidente Lula foca em políticas sociais, econômicas e ambientais.")
 # ]
-# user_input = "E quais estratégias devo usar?"
-# conversation_history = [
-#     ("Como faço para criar uma campanha de marketing digital?", 
-#      "Você pode criar uma campanha de marketing digital definindo seu público-alvo, estabelecendo objetivos claros, criando conteúdo relevante e escolhendo as plataformas certas para distribuição."),
-#     ("Quais são as melhores plataformas?", 
-#      "As melhores plataformas dependem do seu público, mas geralmente incluem Facebook, Instagram, Google Ads e LinkedIn."),
-#     ("E para o setor de tecnologia?", 
-#      "No setor de tecnologia, LinkedIn e Google Ads são altamente recomendados por serem mais focados em um público profissional.")
-# ]
+user_input = "E quais estratégias devo usar?"
+conversation_history = [
+    ("Como faço para criar uma campanha de marketing digital?", 
+     "Você pode criar uma campanha de marketing digital definindo seu público-alvo, estabelecendo objetivos claros, criando conteúdo relevante e escolhendo as plataformas certas para distribuição."),
+    ("Quais são as melhores plataformas?", 
+     "As melhores plataformas dependem do seu público, mas geralmente incluem Facebook, Instagram, Google Ads e LinkedIn."),
+    ("E para o setor de tecnologia?", 
+     "No setor de tecnologia, LinkedIn e Google Ads são altamente recomendados por serem mais focados em um público profissional.")
+]
 
 # user_input_1 = "E para investimentos?"
 # conversation_history_1 = [

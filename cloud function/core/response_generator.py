@@ -1,5 +1,6 @@
 from langchain_google_vertexai import ChatVertexAI
 from langchain_core.documents import Document  # Certifique-se de importar o tipo Document
+from langchain.schema import SystemMessage, HumanMessage, AIMessage
 
 
 class ResponseGenerator:
@@ -20,24 +21,26 @@ class ResponseGenerator:
         d) Utilizar os resultados da pesquisa para fornecer informações úteis, mencionando os documentos relevantes quando aplicável.
         """
 
-        formatted_history = [("system", prompt_instructions)]
+        formatted_history = [SystemMessage(content=prompt_instructions)]
 
         if conversation_history:
             for user_question, bot_answer in conversation_history:
-                formatted_history.append(("human", user_question))
-                formatted_history.append(("system", bot_answer))
+                formatted_history.append(HumanMessage(content=user_question))
+                formatted_history.append(AIMessage(content=bot_answer))
+
 
         # Adiciona a nova pergunta do usuário
-        formatted_history.append(("human", user_input))
+        formatted_history.append(HumanMessage(content=user_input))
 
         # Adiciona os resultados relevantes da pesquisa como contexto para a LLM
         search_context = "\n\n".join([f"Documento: {doc.metadata.get('title', 'Sem título')}\n"
                                       f"Conteúdo: {doc.page_content}" for doc in relevant_documents])
         
-        formatted_history.append(("system", f"Resultados da pesquisa:\n{search_context}"))
+        formatted_history.append(HumanMessage(content=f"Resultados da pesquisa:\n{search_context}"))
 
         # Invoca a LLM para gerar a resposta conversacional
         conversational_answer = self.llm_client.invoke(formatted_history).content
 
         return conversational_answer
+
 

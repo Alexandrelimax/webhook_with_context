@@ -1,16 +1,15 @@
-# main.py
-
-from prompt_defender.layers.wall_defender import Wall
-from prompt_defender.layers.keep_defender import Keep
-from prompt_defender.layers.drawbridge_defender import Drawbridge
 from langchain_google_vertexai import VertexAI
+
+from prompt_defender.layers.wall_defender import WallDefender
+from prompt_defender.layers.keep_defender import KeepDefender
+from prompt_defender.layers.drawbridge_defender import DrawbridgeDefender
 
 
 def main():
     # Inicializa as camadas de defesa e o LLM
-    wall = Wall()
-    keep = Keep()
-    drawbridge = Drawbridge(allow_unsafe_scripts=False)
+    wall = WallDefender()
+    keep = KeepDefender()
+    drawbridge = DrawbridgeDefender(allow_unsafe_scripts=False)
     
     # Inicializa o cliente do Vertex AI
     llm_client = VertexAI(

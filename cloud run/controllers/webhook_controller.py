@@ -1,13 +1,13 @@
 from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse
-
-from api.base_controller import BaseController
+from typing import Any
+from controllers.base_controller import BaseController
 from repositories.search_history_conversation import SearchHistoryConversation
 from services.conversational_assistant import ConversationalAssistant
-from retrievers.base_retriever import BaseRetriever
+
 
 class WebhookController(BaseController):
-    def __init__(self, project_id: str, llm_client, retriever: BaseRetriever):
+    def __init__(self, project_id: str, llm_client, retriever: Any):
         self.project_id = project_id
         self.llm_client = llm_client
         self.retriever = retriever

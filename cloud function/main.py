@@ -8,7 +8,7 @@ from retrievers.structured_retriever import StructuredRetriever
 
 app = FastAPI()
 
-project_id = "meu_projeto"
+project_id = ""
 region = "us-central1"
 datastore_id = "3541312121684351asd"
 
